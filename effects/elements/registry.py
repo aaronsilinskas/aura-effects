@@ -1,3 +1,5 @@
+"""Registry of all built-in element renderer builders, keyed by element name."""
+
 try:
     from typing import Callable, TypeAlias
 except ImportError:
@@ -36,6 +38,7 @@ def list_element_names() -> list[str]:
 
 
 def get_element_builder(element_name: str) -> ElementBuilder:
+    """Return the builder for an element by name, or raise ``ValueError`` if unknown."""
     key = element_name.strip().lower()
     builder = ELEMENT_BUILDERS.get(key)
     if builder is not None:
