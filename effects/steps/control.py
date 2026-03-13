@@ -41,7 +41,7 @@ def hide(duration: DynamicValue) -> EffectStep:
 
 
 class CallStep(EffectStep):
-    """Invokes a callback each frame, then immediately advances to the next step.
+    """Invokes a callback once when activated, then immediately advances to the next step.
 
     Useful for triggering side effects (e.g. notifying listeners like a sound effects player)
     at a specific point in a step sequence without pausing the effect.
@@ -56,5 +56,5 @@ class CallStep(EffectStep):
 
 
 def call(callback: Callable[[EffectState, EffectTimer], None]) -> EffectStep:
-    """Return a step that invokes ``callback`` once per frame and immediately advances."""
+    """Return a step that invokes ``callback`` once when activated, then advances."""
     return CallStep(callback)

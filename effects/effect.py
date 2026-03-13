@@ -187,15 +187,13 @@ class Effect:
     - The transformed position is sampled against the base shape.
     - ``adjust_value`` from all steps is then applied in order.
     - Output is clamped to ``[0.0, 1.0]``.
+
+    Parameters:
+    - ``name``: Human-readable identifier for logging and debugging.
+    - ``shape_func``: Base shape sampled during ``value``; defaults to a zero shape.
     """
 
     def __init__(self, name: str, shape_func: EffectShapeFunc = Shape.none()):
-        """Create an effect.
-
-        Args:
-            name: Human-readable name used for logging and debugging.
-            shape_func: Base shape function sampled in ``value``.
-        """
         self.name = name
         self._shape: EffectShapeFunc = shape_func
         self._steps: list[EffectStep] = []
