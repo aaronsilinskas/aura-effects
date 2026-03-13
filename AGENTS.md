@@ -31,6 +31,15 @@ Guidelines:
 - Keep branch-heavy logic minimal in pixel loops.
 - Prefer simple data structures and explicit loops over abstraction-heavy code in hot paths.
 
+## Docstring Preferences
+
+- Open class docstrings with what the class is for and why it matters to the user, not an internal description of its mechanics.
+- Follow with technical contracts (update model, sampling model, state ownership, etc.) using concise bullet lists under named sections.
+- Method docstrings should be one line when the signature already conveys the what; expand only to describe non-obvious ordering, return semantics, or side effects.
+- Use `double backticks` for all symbol references. Avoid bare words like `True`, `None`, or field names.
+- Avoid restating what the code plainly does. Prefer describing intent, constraints, and caller responsibilities.
+- Do not add docstrings to `__init__` when the class docstring already covers construction parameters.
+
 ## CircuitPython Compatibility
 
 - Keep typing imports guarded where needed (`try/except ImportError`) if required by environment.
