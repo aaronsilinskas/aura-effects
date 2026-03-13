@@ -18,6 +18,12 @@ time_sand_palette = bytes([0, 0, 0, 0,
 
 
 def build_time_renderer(config: RendererConfig) -> EffectRenderer:
+    """A drifting amber-brown noise evoking shifting sand, overlaid with
+    rotating gray tick marks like a timer.
+
+    Level: sand drifts faster and the tick marks multiply; everything spins
+    more quickly.
+    """
     level = config.level
 
     drift_speed = level_lerp(level, 0.02, 0.065)

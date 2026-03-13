@@ -11,6 +11,12 @@ light_palette = bytes([0, 32, 32, 32,
 
 
 def build_light_renderer(config: RendererConfig) -> EffectRenderer:
+    """Tight, rapid white flickers — a bright noisy pulse concentrated in a
+    narrow band, like an overdriven flash.
+
+    Level: hotter sparks that also cool faster — brighter peaks with quicker
+    turnover and more rapid flickering.
+    """
     level = config.level
 
     heat_rate = level_lerp(level, 0.5, 0.75)

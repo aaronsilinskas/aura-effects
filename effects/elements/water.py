@@ -16,6 +16,12 @@ water_palette = bytes([0, 0, 0, 64,
 
 
 def build_water_renderer(config: RendererConfig) -> EffectRenderer:
+    """A flowing deep-blue-to-cyan flame that drifts along the strip and
+    occasionally reverses direction, like light rippling under moving water.
+
+    Level: the current accelerates and the flame grows more turbulent,
+    producing faster, stronger ripples.
+    """
     level = config.level
     resolution = config.resolution
 

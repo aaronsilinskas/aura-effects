@@ -15,6 +15,12 @@ lightning_palette = bytes([0, 0, 0, 0,
 
 
 def build_lightning_renderer(config: RendererConfig) -> EffectRenderer:
+    """Blinding orange flashes that strike at random positions and vanish in an
+    instant. Higher levels layer concurrent bolts for a branching storm effect.
+
+    Level: more bolts strike simultaneously and each flash can linger slightly
+    longer.
+    """
     level = config.level
 
     hide_max = 1.5 - (1 - 1 / level)

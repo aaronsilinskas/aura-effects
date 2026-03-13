@@ -18,6 +18,12 @@ gravity_palette = bytes([0, 0, 0, 0,
 
 
 def build_gravity_renderer(config: RendererConfig) -> EffectRenderer:
+    """A slowly drifting deep-space nebula in indigo and navy, scattered
+    with white stars that softly twinkle in and out.
+
+    Level: more stars that flash more crisply, the nebula drifts faster, and
+    its contrast deepens.
+    """
     level = config.level
 
     nebula_resolution = max(config.resolution, level_lerp_int(level, 18, 36))

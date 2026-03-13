@@ -15,6 +15,11 @@ earth_palette = bytes([0, 96, 48, 8,
 
 
 def build_earth_renderer(config: RendererConfig) -> EffectRenderer:
+    """A slow, broad smolder in golds with sprouts of earthy greens.
+
+    Level: more heat sparks with a narrower spread, concentrating the smolder
+    into a tighter, more active column.
+    """
     level = config.level
     resolution = config.resolution
     spread = level_lerp(level, 0.7, 0.4)

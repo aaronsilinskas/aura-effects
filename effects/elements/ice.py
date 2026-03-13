@@ -16,6 +16,12 @@ ice_palette = bytes([0, 0, 64, 8,
 
 
 def build_ice_renderer(config: RendererConfig) -> EffectRenderer:
+    """A slow, cold flame that flows and gently rotates — dark teal at the base
+    blooming into bright cyan and white.
+
+    Level: the flame flows and rotates faster with a tighter spread, producing
+    a sharper, more active column.
+    """
     level = config.level
     resolution = config.resolution
 

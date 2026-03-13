@@ -25,6 +25,13 @@ air_palette = bytes([
 
 
 def build_air_renderer(config: RendererConfig) -> EffectRenderer:
+    """Soft green-white breezes that sweep across the strip, fading in,
+    accelerating, then dissolving. Higher levels add simultaneous
+    overlapping breezes.
+
+    Level: breezes last longer, gaps between them shorten, and a second
+    concurrent breeze is added at level 5.
+    """
     level = config.level
 
     accelerate_end = VG.random(0.75, 1.2)

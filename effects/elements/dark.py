@@ -13,6 +13,12 @@ dark_sparkle_palette = bytes([0, 0, 0, 0,
 
 
 def build_dark_renderer(config: RendererConfig) -> EffectRenderer:
+    """Sparse deep-red sparks that flicker and fade against black, like dying
+    embers glowing in the dark.
+
+    Level: more sparks can glow simultaneously, though each spawns more slowly
+    — the field grows denser rather than quickening.
+    """
     level = config.level
 
     spawn_delay_min = level_lerp(level, 0.5, 1.0)

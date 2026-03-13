@@ -15,6 +15,12 @@ fire_palette = bytes([0, 32, 0, 0,
 
 
 def build_fire_renderer(config: RendererConfig) -> EffectRenderer:
+    """Classic flickering flame in deep red, orange, and golden yellow —
+    turbulent with bright peaks and dark, smoldering roots.
+
+    Level: more sparks and faster heat produce a taller, brighter, and more
+    turbulent flame.
+    """
     level = config.level
     resolution = config.resolution
 
