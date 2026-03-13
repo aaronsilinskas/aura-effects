@@ -12,8 +12,22 @@ EffectShapeFunc: TypeAlias = "Callable[[float], float]"
 
 
 class Shape:
+    """Defines the visual form of an effect — the brightness distribution across a strip.
+
+    Choosing a shape determines what an effect looks like: a full gradient, a
+    centered glow, a pulse, a checkerboard, and so on. Shapes are combined with
+    steps to build complete effects.
+
+    Contracts:
+    - Each method returns an ``EffectShapeFunc``: ``(float) -> float``.
+    - Input position is wrapped with modulo into ``[0.0, 1.0]`` before sampling
+      unless noted otherwise.
+    - Output is a brightness value in ``[0.0, 1.0]``.
+    """
+
     @staticmethod
     def none() -> EffectShapeFunc:
+        """Return a shape that always produces ``0.0``."""
         def shape(_: float) -> float:
             return 0.0
 
@@ -21,6 +35,7 @@ class Shape:
 
     @staticmethod
     def gradient() -> EffectShapeFunc:
+        """Return a gamma-corrected ramp from ``0.0`` at position ``0.0`` to ``1.0`` at ``1.0``."""
         gamma = GAMMA_FACTOR
 
         def shape(position: float) -> float:
@@ -30,6 +45,7 @@ class Shape:
 
     @staticmethod
     def centered_gradient() -> EffectShapeFunc:
+        """Return a gamma-corrected ramp that peaks at ``1.0`` in the center and falls to ``0.0`` at both edges."""
         gamma = GAMMA_FACTOR
 
         def shape(position: float) -> float:
@@ -43,6 +59,12 @@ class Shape:
 
     @staticmethod
     def padded(padding: float, shape_func: EffectShapeFunc) -> EffectShapeFunc:
+        """Wrap ``shape_func`` with symmetric dead zones on each side.
+
+        ``padding`` is a fraction of the total span clamped to ``[0.0, 0.5]``.
+        Positions within the padding regions return ``0.0``; positions inside
+        are remapped to ``[0.0, 1.0]`` before being passed to ``shape_func``.
+        """
         clamped_padding = max(0.0, min(0.5, padding))
         span = 1.0 - 2.0 * clamped_padding
         if span <= 0.0:
@@ -65,6 +87,7 @@ class Shape:
 
     @staticmethod
     def reverse(shape_func: EffectShapeFunc) -> EffectShapeFunc:
+        """Return ``shape_func`` sampled in reverse, so position ``0.0`` maps to ``1.0`` and vice versa."""
         def shape(position: float) -> float:
             return shape_func(1.0 - (position % 1.0))
 
@@ -72,7 +95,7 @@ class Shape:
 
     @staticmethod
     def sine(frequency: DynamicValue) -> EffectShapeFunc:
-        """Smooth sine wave with a given frequency"""
+        """Return a sine wave oscillating between ``0.0`` and ``1.0`` at the given frequency."""
         frequency_value = ValueGenerator.resolve(frequency)
         tau = 2.0 * math.pi
 
@@ -83,6 +106,12 @@ class Shape:
 
     @staticmethod
     def checkers(value: float, count: int, width: float) -> EffectShapeFunc:
+        """Return a repeating checker pattern of ``count`` segments across ``[0.0, 1.0]``.
+
+        Each checker has a flat region at ``value`` followed by a short fade to
+        ``0.0`` controlled by ``width`` (fraction of segment, clamped to
+        ``[0.0, 1.0]``).
+        """
         clamped_width = max(0.0, min(1.0, width))
         if count <= 0 or clamped_width <= 0.0:
             return Shape.none()
