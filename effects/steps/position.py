@@ -3,6 +3,8 @@ from effects.value import DynamicValue, Range, ValueGenerator
 
 
 class SetPositionStep(EffectStep):
+    """Offsets the sampling position by a fixed or dynamic amount each frame."""
+
     def __init__(self, position: DynamicValue):
         self.position = position
 
@@ -15,10 +17,19 @@ class SetPositionStep(EffectStep):
 
 
 def set_position(position: DynamicValue) -> EffectStep:
+    """Return a step that shifts the sampling position by ``position`` each frame."""
     return SetPositionStep(position)
 
 
 class VelocitySharedData:
+    """Shared rotational state written by ``RotateStep`` and ``AccelerateStep``.
+
+    Stored in ``EffectState`` under a single key so that steps like
+    ``AccelerateStep`` and ``FaceForwardStep`` can read the current speed and
+    accumulated offset without being coupled to a specific ``RotateStep``
+    instance.
+    """
+
     _VELOCITY_SHARED_KEY = SharedStateKey()
 
     def __init__(self) -> None:
@@ -40,6 +51,13 @@ class VelocitySharedData:
 
 
 class RotateStep(EffectStep):
+    """Continuously rotates the sampling position at a given speed.
+
+    Accumulates a position offset each frame based on ``rotations_per_second``
+    and writes velocity data to ``VelocitySharedData`` so that downstream steps
+    like ``AccelerateStep`` and ``FaceForwardStep`` can read the current speed.
+    """
+
     def __init__(self, rotations_per_second: DynamicValue):
         self.rotations_per_second = rotations_per_second
 
@@ -65,10 +83,17 @@ class RotateStep(EffectStep):
 
 
 def rotate(rotations_per_second: DynamicValue) -> EffectStep:
+    """Return a step that rotates the sampling position at ``rotations_per_second``."""
     return RotateStep(rotations_per_second)
 
 
 class AccelerateStep(EffectStep):
+    """Interpolates rotational speed from a start to an end value over the step's timer duration.
+
+    Reads ``VelocitySharedData`` to seed the initial speed when ``start`` is
+    ``None``, allowing a smooth hand-off from a preceding ``RotateStep`` or ``AccelerateStep``.
+    """
+
     def __init__(
         self,
         start: DynamicValue | None = None,
@@ -120,10 +145,16 @@ def accelerate(
     end: DynamicValue = 1.0,
     direction: DynamicValue | None = None,
 ) -> EffectStep:
+    """Return a step that ramps rotational speed from ``start`` to ``end``."""
     return AccelerateStep(start, end, direction)
 
 
 class FaceForwardStep(EffectStep):
+    """Flips the sampling direction so the effect always faces the direction of motion.
+
+    Reads ``VelocitySharedData`` — when ``rotations_per_second`` is negative,
+    the position is mirrored so the effect head leads rather than trails.
+    """
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
         return True
@@ -137,4 +168,5 @@ class FaceForwardStep(EffectStep):
 
 
 def face_forward() -> EffectStep:
+    """Return a step that mirrors the sampling direction when moving in reverse."""
     return FaceForwardStep()

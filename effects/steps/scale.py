@@ -3,6 +3,12 @@ from effects.value import DynamicValue, Range, ValueGenerator
 
 
 class MultiplierStep(EffectStep):
+    """Scales the output value from a start to an end multiplier over the step's timer duration.
+
+    Useful for fading an effect in or out, or modulating intensity over time.
+    The multiplier is interpolated each frame using the parent timer's progress.
+    """
+
     def __init__(self, start: DynamicValue, end: DynamicValue):
         self.start = start
         self.end = end
@@ -36,4 +42,5 @@ class MultiplierStep(EffectStep):
 
 
 def multiplier(start: DynamicValue, end: DynamicValue) -> EffectStep:
+    """Return a step that scales output value from ``start`` to ``end`` over the timer duration."""
     return MultiplierStep(start, end)

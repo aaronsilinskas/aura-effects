@@ -5,6 +5,13 @@ from effects.value import DynamicValue, ValueGenerator as VG, lerp
 
 
 class DriftNoiseStep(EffectStep):
+    """Adds drifting random noise to the output value, creating an organic shimmer.
+
+    A fixed-size noise buffer is initialized once and slowly scrolled each frame
+    at ``drift_speed``. Each pixel samples the buffer with linear interpolation,
+    so the noise appears to flow rather than flicker.
+    """
+
     def __init__(
         self,
         resolution: int,
@@ -56,6 +63,7 @@ def drift_noise(
     drift_speed: DynamicValue = 0.04,
     amplitude: DynamicValue = 0.2,
 ) -> EffectStep:
+    """Return a step that overlays drifting noise with the given ``amplitude``."""
     return DriftNoiseStep(
         resolution=resolution,
         drift_speed=drift_speed,

@@ -5,6 +5,14 @@ from effects.value import DynamicValue, lerp, ValueGenerator as VG
 
 
 class FlameStep(EffectStep):
+    """Simulates a flame by heating random spark points and cooling the surrounding buffer.
+
+    A heat buffer tracks per-cell intensity. Sparks ignite cells, spreading heat
+    to neighbors based on ``spread``. All cells cool each frame at a rate derived
+    from the spark count and heat rate, ensuring the buffer stays bounded.
+    Output values are additively blended with the incoming effect value.
+    """
+
     def __init__(
         self,
         spark_count: DynamicValue,
@@ -106,4 +114,5 @@ def flame(
     resolution: int = 16,
     spread: float = 0.1,
 ) -> EffectStep:
+    """Return a step that overlays a flame simulation onto the effect."""
     return FlameStep(spark_count, heat_rate, extra_cool_rate, resolution, spread)

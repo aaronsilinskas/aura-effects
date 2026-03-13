@@ -8,6 +8,10 @@ from effects.value import DynamicValue, ValueGenerator
 
 
 class HideStep(EffectStep):
+    """Suppresses all output for a fixed duration, then advances to the next step.
+
+    While active, ``adjust_value`` returns ``0.0`` regardless of the effect shape.
+    """
 
     def __init__(self, duration: DynamicValue):
         self.duration = duration
@@ -32,10 +36,17 @@ class HideStep(EffectStep):
 
 
 def hide(duration: DynamicValue) -> EffectStep:
+    """Return a step that holds output at ``0.0`` for ``duration`` seconds, then advances."""
     return HideStep(duration)
 
 
 class CallStep(EffectStep):
+    """Invokes a callback each frame, then immediately advances to the next step.
+
+    Useful for triggering side effects (e.g. notifying listeners like a sound effects player)
+    at a specific point in a step sequence without pausing the effect.
+    """
+
     def __init__(self, callback: Callable[[EffectState, EffectTimer], None]):
         self.callback = callback
 
@@ -45,4 +56,5 @@ class CallStep(EffectStep):
 
 
 def call(callback: Callable[[EffectState, EffectTimer], None]) -> EffectStep:
+    """Return a step that invokes ``callback`` once per frame and immediately advances."""
     return CallStep(callback)
