@@ -124,7 +124,7 @@ them:
 
 Dynamic values are **resolved** as needed by the step, which can happen
 at step initialization, or during a frame. Using `VG.random(...)` for a step parameter
-means the value is randomized fresh each time the step needs a new value.
+means the value is randomized each time the step needs a new value.
 
 ---
 
