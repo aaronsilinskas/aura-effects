@@ -48,9 +48,9 @@ class SharedStateKey:
 
 
 class EffectState:
-    """Mutable container for per-effect, per-step, and shared runtime state.
+    """Holds all mutable animation state so a single ``Effect`` can drive multiple simultaneous animations without interference.
 
-    Keeping all mutable state here allows the same ``Effect`` instance to run
+    Keeping state external to the effect allows the same ``Effect`` instance to run
     independently across multiple simultaneous animations.
 
     Shared data is accessible across steps; for example, velocity can be shared
@@ -149,12 +149,7 @@ class EffectStep:
     """
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
-        """Update step state for the current frame.
-
-        Returns:
-            ``True`` when the effect should advance to the next step.
-            ``False`` to keep this step active.
-        """
+        """Advance step state for one frame; return ``True`` to advance to the next step, ``False`` to stay active."""
         raise NotImplementedError(
             "EffectStep subclasses must implement the update method"
         )

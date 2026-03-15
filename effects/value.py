@@ -18,7 +18,7 @@ def lerp(a: float, b: float, t: float) -> float:
 
 
 class Range:
-    """A start-to-end float range that can be sampled by progress."""
+    """Interpolates a float between ``start`` and ``end`` by a normalized progress value."""
 
     __slots__ = ("start", "end")
 

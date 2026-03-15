@@ -1,5 +1,4 @@
-# A level is a user-facing intensity value in the range [1, 10].
-# These helpers convert levels to normalized floats and interpolated values.
+"""User-facing intensity levels in the range [1, 10] and helpers to map them to normalized floats and interpolated values."""
 
 
 def clamp_level(level: int) -> int:

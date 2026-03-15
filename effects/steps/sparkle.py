@@ -7,10 +7,8 @@ from effects.value import DynamicValue, ValueGenerator as VG, lerp
 class SparkleStep(EffectStep):
     """Overlays randomly spawning sparkles that fade in and out across the strip.
 
-    Each sparkle has an independent idle → fade-in → fade-out lifecycle. Sparkles
-    are assigned to non-overlapping positions and their intensities are blended
-    into the output value additively via a fixed-size buffer sampled with linear
-    interpolation.
+    Sparkles occupy non-overlapping positions and blend additively into the
+    output value.
     """
 
     PHASE_IDLE = 0

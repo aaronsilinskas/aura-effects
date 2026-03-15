@@ -5,12 +5,11 @@ from effects.value import DynamicValue, lerp, ValueGenerator as VG
 
 
 class FlameStep(EffectStep):
-    """Simulates a flame by heating random spark points and cooling the surrounding buffer.
+    """Produces a flickering heat animation that resembles a gas flame or heat shimmer.
 
-    A heat buffer tracks per-cell intensity. Sparks ignite cells, spreading heat
-    to neighbors based on ``spread``. All cells cool each frame at a rate derived
-    from the spark count and heat rate, ensuring the buffer stays bounded.
-    Output values are additively blended with the incoming effect value.
+    Random spark points ignite and spread heat to neighboring cells based on
+    ``spread``; all cells cool each frame. Output is additively blended with
+    the incoming effect value.
     """
 
     def __init__(
