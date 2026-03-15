@@ -23,6 +23,8 @@ class DriftNoiseStep(EffectStep):
         self.amplitude = VG.resolve(amplitude)
 
     class _Data:
+        __slots__ = ("noise", "offset")
+
         def __init__(self, buffer_count: int):
             self.noise = [0.0] * buffer_count
             self.offset = 0.0

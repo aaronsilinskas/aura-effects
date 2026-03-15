@@ -25,23 +25,27 @@ class FlameStep(EffectStep):
         self.heat_rate = VG.resolve(heat_rate)
         self.extra_cool_rate = VG.resolve(extra_cool_rate)
         self.spread = min(max(spread, 0.0), 1.0)
+        self.half_flame_spread = int(self.spread * self.flame_count) // 2
 
         # calculate minimum cool rate to ensure flames will cool down enough between sparks
         heat_per_spark = self.heat_rate
-        half_flame_spread = int(self.spread * self.flame_count) // 2
-        if half_flame_spread > 0:
-            heat_per_spark += self.heat_rate * (half_flame_spread + 2)
+        if self.half_flame_spread > 0:
+            heat_per_spark += self.heat_rate * (self.half_flame_spread + 2)
         total_spark_heat = heat_per_spark * self.spark_count
         cooling_buffer_size = self.flame_count - self.spark_count
         min_cool_rate = total_spark_heat / cooling_buffer_size
         self.cool_rate = min_cool_rate + self.extra_cool_rate
 
     class _Data:
+        __slots__ = ("spark_buffer", "flame_buffer", "sparks_to_remove", "remove_count")
+
         def __init__(self, spark_count: int, flame_count: int):
             self.spark_buffer: set[int] = set()
             for _ in range(spark_count):
                 self.spark_buffer.add(random.randint(0, flame_count - 1))
             self.flame_buffer = [0.0] * flame_count
+            self.sparks_to_remove = [0] * spark_count
+            self.remove_count = 0
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
         data = state.get_step_data(self, FlameStep._Data)
@@ -64,10 +68,12 @@ class FlameStep(EffectStep):
                 flame_buffer[i] = flame
 
         # Heat up around new sparks
-        half_flame_spread = int(self.spread * flame_count) // 2
+        half_flame_spread = self.half_flame_spread
+        spark_heat = self.heat_rate * timer.elapsed
+        remove_count = 0
+        sparks_to_remove = data.sparks_to_remove
 
-        for spark_index in list(spark_buffer):
-            spark_heat = self.heat_rate * timer.elapsed
+        for spark_index in spark_buffer:
             if flame_buffer[spark_index] < 1.0:
                 # spark not at max heat yet, so heat it up and neighbors
                 for offset in range(-half_flame_spread, half_flame_spread + 1):
@@ -80,8 +86,12 @@ class FlameStep(EffectStep):
                             / half_flame_spread
                         )
             else:
-                # spark at max heat, so remove it
-                spark_buffer.remove(spark_index)
+                # defer removal so we don't mutate the set during iteration
+                sparks_to_remove[remove_count] = spark_index
+                remove_count += 1
+
+        for i in range(remove_count):
+            spark_buffer.discard(sparks_to_remove[i])
 
         # replenish sparks if needed
         while len(spark_buffer) < self.spark_count:

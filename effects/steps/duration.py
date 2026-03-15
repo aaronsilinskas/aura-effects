@@ -29,6 +29,8 @@ class DurationStep(EffectStep):
         self.steps = list(steps)
 
     class _Data:
+        __slots__ = ("timer", "step_index")
+
         def __init__(self, duration: float):
             self.timer = EffectTimer(duration=duration)
             self.step_index: int = 0
