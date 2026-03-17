@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from effects.effect import EffectState, EffectStep, EffectTimer, SharedStateKey
 from effects.value import DynamicValue, Range, ValueGenerator
 
