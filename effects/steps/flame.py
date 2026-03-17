@@ -36,6 +36,7 @@ class FlameStep(EffectStep):
         cooling_buffer_size = self.flame_count - self.spark_count
         min_cool_rate = total_spark_heat / cooling_buffer_size
         self.cool_rate = min_cool_rate + self.extra_cool_rate
+        self._spread_range = range(-self.half_flame_spread, self.half_flame_spread + 1)
 
     class _Data:
         __slots__ = ("flame_buffer", "remove_count", "spark_buffer", "sparks_to_remove")
@@ -77,14 +78,12 @@ class FlameStep(EffectStep):
         for spark_index in spark_buffer:
             if flame_buffer[spark_index] < 1.0:
                 # spark not at max heat yet, so heat it up and neighbors
-                for offset in range(-half_flame_spread, half_flame_spread + 1):
+                for offset in self._spread_range:
                     if offset == 0:
                         flame_buffer[spark_index] += spark_heat
                     else:
                         flame_buffer[(spark_index + offset) % flame_count] += (
-                            spark_heat
-                            * (1 + half_flame_spread - abs(offset))
-                            / half_flame_spread
+                            spark_heat * (1 + half_flame_spread - abs(offset)) / half_flame_spread
                         )
             else:
                 # defer removal so we don't mutate the set during iteration

@@ -29,6 +29,8 @@ class SparkleStep(EffectStep):
         self.spawn_delay_rate = spawn_delay_rate
         self.fade_in_rate = VG.resolve(fade_in_rate)
         self.fade_out_rate = VG.resolve(fade_out_rate)
+        self._buffer_range = range(self.buffer_count)
+        self._sparkle_range = range(self.sparkle_count)
 
     class _Data:
         __slots__ = ("buffer", "indices", "intensity", "phase", "slot_index", "spawn_delay")
@@ -49,10 +51,10 @@ class SparkleStep(EffectStep):
                 data.spawn_delay[i] = VG.resolve(self.spawn_delay_rate)
             state.set_step_data(self, data)
 
-        for i in range(self.buffer_count):
+        for i in self._buffer_range:
             data.buffer[i] = 0.0
 
-        for i in range(self.sparkle_count):
+        for i in self._sparkle_range:
             phase = data.phase[i]
             intensity = data.intensity[i]
 
