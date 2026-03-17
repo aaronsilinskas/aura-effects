@@ -121,17 +121,16 @@ class Shape:
             return Shape.none()
 
         span = 1.0 / count
-        effective_width = clamped_width * span
 
         def shape(position: float) -> float:
             pos = position % 1.0
             mod_pos = pos % span
 
-            if mod_pos < effective_width:
+            if mod_pos < clamped_width:
                 return value
-            mod_pos -= effective_width
-            if mod_pos < effective_width:
-                return value - (value * mod_pos / effective_width)
+            mod_pos -= clamped_width
+            if mod_pos < clamped_width:
+                return value - (value * mod_pos / clamped_width)
 
             return 0.0
 
