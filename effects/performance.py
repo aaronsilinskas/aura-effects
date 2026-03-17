@@ -43,7 +43,8 @@ class PerformanceTracker:
         self.render_time_total += time.monotonic() - self._render_started_at
 
     def complete_frame(self, current_time: float) -> None:
-        """Record memory allocation for this frame and print stats if the log interval has elapsed."""
+        """Record memory allocation for this frame and print stats
+        if the log interval has elapsed."""
         memory_after = gc.mem_alloc()
         available_memory = gc.mem_free()
 

@@ -1,4 +1,5 @@
-"""User-facing intensity levels in the range [1, 10] and helpers to map them to normalized floats and interpolated values."""
+"""User-facing intensity levels in the range [1, 10] and helpers to map them
+to normalized floats and interpolated values."""
 
 
 def clamp_level(level: int) -> int:
@@ -23,6 +24,7 @@ def level_lerp(level: int, minimum: float, maximum: float) -> float:
 
 
 def level_lerp_int(level: int, minimum: int, maximum: int) -> int:
-    """Interpolate between ``minimum`` and ``maximum`` based on ``level``, rounded to the nearest int."""
+    """Interpolate between ``minimum`` and ``maximum`` based on ``level``,
+    rounded to the nearest int."""
     value = level_lerp(level, float(minimum), float(maximum))
     return int(value + 0.5)

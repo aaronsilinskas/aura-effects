@@ -46,11 +46,13 @@ class SharedStateKey:
 
 
 class EffectState:
-    """Holds all mutable animation state so one ``Effect`` instance can drive multiple independent animations simultaneously.
+    """Holds all mutable animation state so one ``Effect`` instance can drive
+    multiple independent animations simultaneously.
 
     State ownership:
     - Per-step data is keyed by step instance via ``get_step_data`` / ``set_step_data``.
-    - Shared data is keyed by ``SharedStateKey`` and accessible across steps (e.g. velocity shared between rotate and accelerate steps).
+    - Shared data is keyed by ``SharedStateKey`` and accessible across steps
+      (e.g. velocity shared between rotate and accelerate steps).
     """
 
     def __init__(self):
@@ -143,7 +145,10 @@ class EffectStep:
     """
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
-        """Advance step state for one frame; return ``True`` to advance to the next step, ``False`` to stay active."""
+        """Advance step state for one frame.
+
+        Return ``True`` to advance to the next step, ``False`` to stay active.
+        """
         raise NotImplementedError("EffectStep subclasses must implement the update method")
 
     def adjust_position(self, state: EffectState, position: float) -> float:
