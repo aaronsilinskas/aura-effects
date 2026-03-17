@@ -28,16 +28,9 @@ def test_clamp_level_clamps_above_maximum_to_ten() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_level_progress_is_zero_at_minimum_level() -> None:
-    assert level_progress(1) == pytest.approx(0.0)
-
-
-def test_level_progress_is_one_at_maximum_level() -> None:
-    assert level_progress(10) == pytest.approx(1.0)
-
-
-def test_level_progress_is_half_at_midpoint_level() -> None:
-    assert level_progress(5) == pytest.approx(4 / 9)
+def test_level_progress_maps_each_level_to_correct_normalized_value() -> None:
+    for level in range(1, 11):
+        assert level_progress(level) == pytest.approx((level - 1) / 9)
 
 
 def test_level_progress_clamps_out_of_range_input() -> None:
@@ -50,18 +43,10 @@ def test_level_progress_clamps_out_of_range_input() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_level_lerp_returns_minimum_at_level_one() -> None:
-    assert level_lerp(1, 0.2, 0.8) == pytest.approx(0.2)
-
-
-def test_level_lerp_returns_maximum_at_level_ten() -> None:
-    assert level_lerp(10, 0.2, 0.8) == pytest.approx(0.8)
-
-
-def test_level_lerp_interpolates_proportionally_at_midpoint() -> None:
-    result = level_lerp(5, 0.0, 1.0)
-
-    assert result == pytest.approx(4 / 9)
+def test_level_lerp_maps_each_level_to_correct_interpolated_value() -> None:
+    for level in range(1, 11):
+        progress = (level - 1) / 9
+        assert level_lerp(level, 0.2, 0.8) == pytest.approx(0.2 + progress * 0.6)
 
 
 def test_level_lerp_clamps_out_of_range_level() -> None:
@@ -74,14 +59,8 @@ def test_level_lerp_clamps_out_of_range_level() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_level_lerp_int_returns_minimum_at_level_one() -> None:
-    assert level_lerp_int(1, 10, 200) == 10
-
-
-def test_level_lerp_int_returns_maximum_at_level_ten() -> None:
-    assert level_lerp_int(10, 10, 200) == 200
-
-
-def test_level_lerp_int_rounds_to_nearest_integer() -> None:
-    # level 2: progress = 1/9 → value = 10 + (1/9)*190 ≈ 31.1 → rounds to 31
-    assert level_lerp_int(2, 10, 200) == 31
+def test_level_lerp_int_maps_each_level_to_correct_rounded_value() -> None:
+    for level in range(1, 11):
+        progress = (level - 1) / 9
+        expected = int(10 + progress * 190 + 0.5)
+        assert level_lerp_int(level, 10, 200) == expected

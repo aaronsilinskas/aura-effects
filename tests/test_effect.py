@@ -164,7 +164,7 @@ def test_two_states_drive_same_effect_independently() -> None:
     log: list = []
 
     class _AdvanceOnce(EffectStep):
-        """Advances the first time, then records and holds."""
+        """Advances once on the first update, then stays active indefinitely."""
 
         def update(self, state: EffectState, timer: EffectTimer) -> bool:
             if state.get_step_data(self, bool) is None:

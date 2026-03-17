@@ -9,7 +9,6 @@ def test_multiplier_applies_start_value_at_beginning_of_duration() -> None:
     effect = Effect("test", lambda _: 1.0).add_steps([multiplier(0.25, 1.0)])
     state = EffectState()
     timer = EffectTimer(duration=1.0)
-    timer.update(0.0)
 
     effect.update(state, timer)
     value = effect.value(state, 0.0)
