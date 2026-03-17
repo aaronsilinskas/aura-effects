@@ -22,3 +22,7 @@ Project-specific guidelines:
 ## Docstring Preferences
 
 Governed by the `python-docstrings` skill (`~/.agents/skills/python-docstrings/`).
+
+## Test Writing
+
+Governed by the `test-dev` skill (`~/.agents/skills/test-dev/`).
