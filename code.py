@@ -1,20 +1,19 @@
-import time
 import gc
+import time
 
 import neopixel
 
 try:
-    from typing import Callable
+    from collections.abc import Callable
 except ImportError:
     pass  # No typing support on CircuitPython yet
 
-from effects.effect import EffectState, EffectTimer
-from effects.elements.registry import get_element_builder, list_element_names
-from effects.render import EffectRenderer, RendererConfig
-from effects.performance import PerformanceTracker
-
 import board
 
+from effects.effect import EffectState, EffectTimer
+from effects.elements.registry import get_element_builder, list_element_names
+from effects.performance import PerformanceTracker
+from effects.render import EffectRenderer, RendererConfig
 
 NUM_LEDS = 12
 ring_pixels = neopixel.NeoPixel(

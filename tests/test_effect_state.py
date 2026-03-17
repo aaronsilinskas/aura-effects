@@ -1,5 +1,4 @@
-from effects.effect import EffectState, EffectStep, EffectTimer, SharedStateKey
-
+from effects.effect import EffectState, EffectStep, SharedStateKey
 
 # ---------------------------------------------------------------------------
 # Shared data — read and write across steps

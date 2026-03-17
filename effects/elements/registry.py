@@ -1,7 +1,8 @@
 """Registry of all built-in element renderer builders, keyed by element name."""
 
 try:
-    from typing import Callable, TypeAlias
+    from collections.abc import Callable
+    from typing import TypeAlias
 except ImportError:
     pass
 

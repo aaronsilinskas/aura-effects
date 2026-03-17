@@ -1,12 +1,12 @@
 import math
 
 try:
-    from typing import Callable, TypeAlias
+    from collections.abc import Callable
+    from typing import TypeAlias
 except ImportError:
     pass
 
-from effects.value import DynamicValue, GAMMA_FACTOR, ValueGenerator
-
+from effects.value import GAMMA_FACTOR, DynamicValue, ValueGenerator
 
 EffectShapeFunc: TypeAlias = "Callable[[float], float]"
 

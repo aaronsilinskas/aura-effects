@@ -1,5 +1,5 @@
 try:
-    from typing import Callable
+    from collections.abc import Callable
 except ImportError:
     pass  # No typing support on CircuitPython yet
 

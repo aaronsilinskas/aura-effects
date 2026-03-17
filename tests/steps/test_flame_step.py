@@ -1,8 +1,8 @@
 import pytest
+from conftest import make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.flame import flame
-from conftest import make_timer
 
 
 def test_flame_output_is_always_at_least_as_large_as_input_value() -> None:

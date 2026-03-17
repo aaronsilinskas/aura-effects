@@ -13,7 +13,7 @@ class MultiplierStep(EffectStep):
         self.end = end
 
     class _Data:
-        __slots__ = ("range", "multiplier")
+        __slots__ = ("multiplier", "range")
 
         def __init__(self, start: float, end: float):
             self.range: Range = Range(start, end)

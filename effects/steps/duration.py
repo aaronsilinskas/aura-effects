@@ -1,5 +1,5 @@
 try:
-    from typing import Iterable
+    from collections.abc import Iterable
 except ImportError:
     pass  # No typing support on CircuitPython yet
 
@@ -29,7 +29,7 @@ class DurationStep(EffectStep):
         self.steps = list(steps)
 
     class _Data:
-        __slots__ = ("timer", "step_index")
+        __slots__ = ("step_index", "timer")
 
         def __init__(self, duration: float):
             self.timer = EffectTimer(duration=duration)

@@ -2,7 +2,6 @@ import pytest
 
 from effects.effect import Effect, EffectState, EffectTimer
 from effects.steps.position import VelocitySharedData, accelerate
-from conftest import make_timer
 
 
 def test_accelerate_interpolates_speed_at_midpoint_of_timer() -> None:

@@ -3,7 +3,6 @@ from effects.level import level_lerp
 from effects.palette import PaletteLUT256
 from effects.render import EffectRenderer, RendererConfig
 from effects.steps.flame import flame
-from effects.steps.position import rotate
 
 # fmt: off
 earth_palette = bytes([0, 96, 48, 8,

@@ -1,8 +1,8 @@
 import pytest
+from conftest import make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.position import set_position
-from conftest import make_timer
 
 
 def test_set_position_shifts_sampling_position_by_fixed_amount() -> None:

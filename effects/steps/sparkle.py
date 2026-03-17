@@ -1,7 +1,8 @@
 import random
 
 from effects.effect import EffectState, EffectStep, EffectTimer
-from effects.value import DynamicValue, ValueGenerator as VG, lerp
+from effects.value import DynamicValue, lerp
+from effects.value import ValueGenerator as VG
 
 
 class SparkleStep(EffectStep):
@@ -30,7 +31,7 @@ class SparkleStep(EffectStep):
         self.fade_out_rate = VG.resolve(fade_out_rate)
 
     class _Data:
-        __slots__ = ("indices", "slot_index", "intensity", "phase", "spawn_delay", "buffer")
+        __slots__ = ("buffer", "indices", "intensity", "phase", "slot_index", "spawn_delay")
 
         def __init__(self, sparkle_count: int, buffer_count: int):
             self.indices: set[int] = set()

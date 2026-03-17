@@ -1,7 +1,4 @@
 import pytest
-
-from effects.effect import Effect, EffectState, EffectTimer
-from effects.steps.duration import duration
 from conftest import (
     CountUpdates,
     MultiplyValue,
@@ -10,6 +7,8 @@ from conftest import (
     make_timer,
 )
 
+from effects.effect import Effect, EffectState
+from effects.steps.duration import duration
 
 # ---------------------------------------------------------------------------
 # Child step transforms — active while timer is running

@@ -3,7 +3,6 @@ import pytest
 from effects.shape import Shape
 from effects.value import GAMMA_FACTOR
 
-
 # ---------------------------------------------------------------------------
 # Shape.none
 # ---------------------------------------------------------------------------

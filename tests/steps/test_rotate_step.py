@@ -1,8 +1,8 @@
 import pytest
-
-from effects.effect import Effect, EffectState, EffectTimer
-from effects.steps.position import rotate
 from conftest import make_timer
+
+from effects.effect import Effect, EffectState
+from effects.steps.position import rotate
 
 
 def test_rotate_shifts_position_proportional_to_speed_and_elapsed() -> None:

@@ -2,7 +2,6 @@ import pytest
 
 from effects.palette import Palette, PaletteLUT256
 
-
 # ---------------------------------------------------------------------------
 # Palette.pack_rgb
 # ---------------------------------------------------------------------------
@@ -85,7 +84,7 @@ def test_lut_with_three_stops_each_segment_has_correct_endpoint_colors() -> None
 
 
 def test_lut_with_no_stops_returns_black_for_any_value() -> None:
-    palette = PaletteLUT256(bytes())
+    palette = PaletteLUT256(b"")
 
     assert palette.lookup(0.0) == 0
     assert palette.lookup(0.5) == 0

@@ -1,8 +1,8 @@
 import pytest
+from conftest import make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.position import VelocitySharedData, face_forward
-from conftest import make_timer
 
 
 def test_face_forward_leaves_position_unchanged_when_moving_forward() -> None:

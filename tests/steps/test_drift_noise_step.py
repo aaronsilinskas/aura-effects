@@ -1,8 +1,8 @@
 import pytest
+from conftest import make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.drift_noise import drift_noise
-from conftest import make_timer
 
 
 def test_drift_noise_with_zero_amplitude_is_a_passthrough() -> None:

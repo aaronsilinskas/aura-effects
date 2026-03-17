@@ -1,7 +1,8 @@
 import random
 
 from effects.effect import EffectState, EffectStep, EffectTimer
-from effects.value import DynamicValue, ValueGenerator as VG, lerp
+from effects.value import DynamicValue, lerp
+from effects.value import ValueGenerator as VG
 
 
 class DriftNoiseStep(EffectStep):

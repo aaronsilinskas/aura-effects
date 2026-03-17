@@ -1,3 +1,5 @@
+from conftest import CountUpdates, make_timer
+
 from effects.effect import Effect, EffectState
 from effects.palette import Palette, PaletteLUT256
 from effects.render import (
@@ -6,8 +8,6 @@ from effects.render import (
     EffectRenderer,
     RendererConfig,
 )
-from conftest import CountUpdates, make_timer
-
 
 # ---------------------------------------------------------------------------
 # RendererConfig — level clamping

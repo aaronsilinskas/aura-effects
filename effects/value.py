@@ -3,7 +3,8 @@ from __future__ import annotations
 import random
 
 try:
-    from typing import Callable, TypeAlias
+    from collections.abc import Callable
+    from typing import TypeAlias
 except ImportError:
     pass  # No typing support on CircuitPython yet
 
@@ -20,7 +21,7 @@ def lerp(a: float, b: float, t: float) -> float:
 class Range:
     """Interpolates a float between ``start`` and ``end`` by a normalized progress value."""
 
-    __slots__ = ("start", "end")
+    __slots__ = ("end", "start")
 
     def __init__(self, start: float, end: float):
         self.start = start

@@ -1,11 +1,11 @@
 try:
-    from typing import Callable, TypeAlias
+    from collections.abc import Callable
+    from typing import TypeAlias
 except ImportError:
     pass
 
 from effects.effect import Effect, EffectState, EffectTimer
 from effects.palette import Palette
-
 
 EffectListenerFunc: TypeAlias = "Callable[[str], None]"
 
@@ -18,7 +18,7 @@ class RendererConfig:
     name when significant events occur during rendering.
     """
 
-    __slots__ = ["level", "pixel_count", "resolution", "listeners"]
+    __slots__ = ["level", "listeners", "pixel_count", "resolution"]
 
     def __init__(
         self,

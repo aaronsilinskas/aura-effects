@@ -1,15 +1,14 @@
 import pytest
-
-from effects.effect import Effect, EffectState, EffectStep, EffectTimer
 from conftest import (
     AlwaysAdvance,
+    MultiplyValue,
     NeverAdvance,
     OffsetPosition,
-    MultiplyValue,
     RecordAndHold,
     make_timer,
 )
 
+from effects.effect import Effect, EffectState, EffectStep, EffectTimer
 
 # ---------------------------------------------------------------------------
 # Effect construction

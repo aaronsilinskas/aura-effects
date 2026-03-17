@@ -1,8 +1,8 @@
 import pytest
+from conftest import make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.sparkle import sparkle
-from conftest import make_timer
 
 
 def test_sparkle_with_zero_count_does_not_change_output_value() -> None:

@@ -1,8 +1,8 @@
 import pytest
+from conftest import RecordAndHold, make_timer
 
 from effects.effect import Effect, EffectState
 from effects.steps.control import hide
-from conftest import RecordAndHold, make_timer
 
 
 def test_hide_suppresses_output_while_duration_is_active() -> None:

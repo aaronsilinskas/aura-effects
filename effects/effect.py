@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 try:
-    from typing import Any, TypeVar, Iterable, Type
+    from collections.abc import Iterable
+    from typing import Any, Type, TypeVar
 
     T = TypeVar("T")
 except ImportError:
@@ -9,15 +10,14 @@ except ImportError:
 
 from effects.shape import EffectShapeFunc, Shape
 
-
 _MISSING = object()
 
 
 def run_step_updates(
-    steps: list["EffectStep"],
+    steps: list[EffectStep],
     step_index: int,
-    state: "EffectState",
-    timer: "EffectTimer",
+    state: EffectState,
+    timer: EffectTimer,
 ) -> int:
     """Update a list of ``EffectStep`` instances sequentially until all steps
     have been processed once or a step stops the sequence.
@@ -55,8 +55,8 @@ class EffectState:
 
     def __init__(self):
         self._step_indices: dict[Effect, int] = {}
-        self._step_data: dict[EffectStep, "Any"] = {}
-        self._shared_data: dict[SharedStateKey, "Any"] = {}
+        self._step_data: dict[EffectStep, Any] = {}
+        self._shared_data: dict[SharedStateKey, Any] = {}
 
     def get_step_index(self, effect: Effect) -> int:
         """Return the active step index for an effect, defaulting to ``0``."""
@@ -66,7 +66,7 @@ class EffectState:
         """Set the active step index for an effect."""
         self._step_indices[effect] = index
 
-    def get_step_data(self, step: EffectStep, expected_class: "Type[T]") -> "T | None":
+    def get_step_data(self, step: EffectStep, expected_class: type[T]) -> T | None:
         """Return state previously stored for a step, if any.
 
         ``expected_class`` is accepted for API readability, but runtime type
@@ -74,7 +74,7 @@ class EffectState:
         """
         return self._step_data.get(step)
 
-    def set_step_data(self, step: EffectStep, value: "Any") -> None:
+    def set_step_data(self, step: EffectStep, value: Any) -> None:
         """Store mutable state associated with a specific step instance."""
         self._step_data[step] = value
 
@@ -83,8 +83,8 @@ class EffectState:
         self._step_data.pop(step, None)
 
     def get_shared_data(
-        self, key: SharedStateKey, expected_class: "Type[T]"
-    ) -> "T | None":
+        self, key: SharedStateKey, expected_class: type[T]
+    ) -> T | None:
         """Return shared state for a key, if any.
 
         ``expected_class`` is accepted for API readability, but runtime type
@@ -92,7 +92,7 @@ class EffectState:
         """
         return self._shared_data.get(key)
 
-    def set_shared_data(self, key: SharedStateKey, value: "Any") -> None:
+    def set_shared_data(self, key: SharedStateKey, value: Any) -> None:
         """Store shared state under a key object."""
         self._shared_data[key] = value
 
@@ -116,7 +116,7 @@ class EffectTimer:
     ``update`` always returns ``False``.
     """
 
-    __slots__ = ("elapsed", "total", "duration", "progress")
+    __slots__ = ("duration", "elapsed", "progress", "total")
 
     def __init__(self, duration: float | None = None):
         self.elapsed: float = 0.0

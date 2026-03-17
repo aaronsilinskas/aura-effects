@@ -1,7 +1,8 @@
 import random
 
 from effects.effect import EffectState, EffectStep, EffectTimer
-from effects.value import DynamicValue, lerp, ValueGenerator as VG
+from effects.value import DynamicValue, lerp
+from effects.value import ValueGenerator as VG
 
 
 class FlameStep(EffectStep):
@@ -37,7 +38,7 @@ class FlameStep(EffectStep):
         self.cool_rate = min_cool_rate + self.extra_cool_rate
 
     class _Data:
-        __slots__ = ("spark_buffer", "flame_buffer", "sparks_to_remove", "remove_count")
+        __slots__ = ("flame_buffer", "remove_count", "spark_buffer", "sparks_to_remove")
 
         def __init__(self, spark_count: int, flame_count: int):
             self.spark_buffer: set[int] = set()

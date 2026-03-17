@@ -2,7 +2,6 @@ import pytest
 
 from effects.level import clamp_level, level_lerp, level_lerp_int, level_progress
 
-
 # ---------------------------------------------------------------------------
 # clamp_level
 # ---------------------------------------------------------------------------

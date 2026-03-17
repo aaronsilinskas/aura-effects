@@ -32,7 +32,7 @@ class VelocitySharedData:
     instance.
     """
 
-    __slots__ = ("rotations_per_second", "offset")
+    __slots__ = ("offset", "rotations_per_second")
 
     _VELOCITY_SHARED_KEY = SharedStateKey()
 
