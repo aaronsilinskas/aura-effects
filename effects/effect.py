@@ -2,7 +2,7 @@ from __future__ import annotations
 
 try:
     from collections.abc import Iterable
-    from typing import Any, Type, TypeVar
+    from typing import Any, TypeVar
 
     T = TypeVar("T")
 except ImportError:
@@ -82,9 +82,7 @@ class EffectState:
         """Remove state associated with a specific step, if present."""
         self._step_data.pop(step, None)
 
-    def get_shared_data(
-        self, key: SharedStateKey, expected_class: type[T]
-    ) -> T | None:
+    def get_shared_data(self, key: SharedStateKey, expected_class: type[T]) -> T | None:
         """Return shared state for a key, if any.
 
         ``expected_class`` is accepted for API readability, but runtime type
@@ -134,7 +132,10 @@ class EffectTimer:
         return self.progress >= 1.0
 
     def __str__(self) -> str:
-        return f"EffectTimer(elapsed={self.elapsed}, total={self.total}, duration={self.duration}, progress={self.progress})"
+        return (
+            f"EffectTimer(elapsed={self.elapsed}, total={self.total}, "
+            f"duration={self.duration}, progress={self.progress})"
+        )
 
 
 class EffectStep:
@@ -184,9 +185,11 @@ class Effect:
     - ``shape_func``: Base shape sampled during ``value``; defaults to a zero shape.
     """
 
-    def __init__(self, name: str, shape_func: EffectShapeFunc = Shape.none()):
+    def __init__(self, name: str, shape_func: EffectShapeFunc | None = None):
         self.name = name
-        self._shape: EffectShapeFunc = shape_func
+        self._shape: EffectShapeFunc = (
+            shape_func if shape_func is not None else Shape.none()
+        )
         self._steps: list[EffectStep] = []
 
     def add_steps(self, steps: Iterable[EffectStep]) -> Effect:

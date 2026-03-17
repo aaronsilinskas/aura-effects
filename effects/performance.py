@@ -58,10 +58,19 @@ class PerformanceTracker:
         self.frame_count += 1
         if current_time > self.next_log_time:
             fps = self.frame_count / (current_time - self.start_time)
+            update_avg = self.update_time_total / self.frame_count
+            render_avg = self.render_time_total / self.frame_count
+            mem_delta_avg = self.memory_delta_total / self.frame_count
+            mem_alloc_avg = self.memory_allocated_total / self.frame_count
             print(
-                f"__FPS: {fps:.2f}, Update Time: {self.update_time_total / self.frame_count:.4f}s, Render Time: {self.render_time_total / self.frame_count:.4f}s, "
-                f"Mem Delta Avg: {self.memory_delta_total / self.frame_count:.2f}B, Mem Alloc Avg: {self.memory_allocated_total / self.frame_count:.2f}B, "
-                f"Mem Delta Last: {self.last_memory_delta}B, Mem Delta Peak: {self.memory_delta_peak}B, "
-                f"Mem Used: {memory_after}B, Mem Free: {available_memory}B"
+                f"__FPS: {fps:.2f}, "
+                f"Update Time: {update_avg:.4f}s, "
+                f"Render Time: {render_avg:.4f}s, "
+                f"Mem Delta Avg: {mem_delta_avg:.2f}B, "
+                f"Mem Alloc Avg: {mem_alloc_avg:.2f}B, "
+                f"Mem Delta Last: {self.last_memory_delta}B, "
+                f"Mem Delta Peak: {self.memory_delta_peak}B, "
+                f"Mem Used: {memory_after}B, "
+                f"Mem Free: {available_memory}B"
             )
             self.next_log_time = current_time + self.log_interval

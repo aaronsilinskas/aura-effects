@@ -44,9 +44,7 @@ def test_multiplier_is_at_end_value_just_before_duration_completes() -> None:
     assert value == pytest.approx(0.75, rel=1e-3)
 
 
-def test_multiplier_clears_state_after_duration_completes_so_it_does_not_modify_subsequent_samples() -> (
-    None
-):
+def test_multiplier_clears_state_when_duration_completes() -> None:
     # At progress >= 1.0 MultiplierStep removes its data so adjust_value
     # passes the shape value through unmodified.
     step = multiplier(0.0, 0.5)
