@@ -13,8 +13,9 @@ Two strips run the same checker shape with a velocity that ramps from forward
     accelerate again with a consistent "front."
 
 The speed cycle is built with two duration() + accelerate() phases that
-persist their step state between repetitions (persist_steps=True), so the
-final velocity of one phase hands off smoothly to the next.
+sequence automatically: when each duration expires it returns True and the
+outer Effect advances to the next phase, looping back to phase A when both
+are done.
 
 Run:
     uv run python examples/direction_aware.py
@@ -58,9 +59,9 @@ def build_effect(with_face_forward: bool) -> Effect:
     # Checker pattern: 3 segments, 60% of each segment is lit.
     shape = Shape.checkers(value=1.0, count=3, width=0.05)
 
-    # Two-phase speed cycle using duration() with persist_steps=True.
-    # persist_steps keeps the AccelerateStep's Range alive between repetitions
-    # so the ramp restarts from the configured start speed each time.
+    # Two-phase speed cycle: each duration() runs its child accelerate() step
+    # for 3 seconds then advances. The outer Effect wraps back to phase A when
+    # phase B completes, producing a continuous forward→reverse→forward cycle.
     steps = [
         # Phase A: ramp from +0.5 rps down to −0.5 rps over 3 seconds.
         duration(
