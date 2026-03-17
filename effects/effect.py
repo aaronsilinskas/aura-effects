@@ -99,10 +99,7 @@ class EffectState:
         self._shared_data.pop(key, None)
 
     def __str__(self):
-        return (
-            "EffectState("
-            f"step_indices={self._step_indices}, step_data={self._step_data})"
-        )
+        return f"EffectState(step_indices={self._step_indices}, step_data={self._step_data})"
 
 
 class EffectTimer:
@@ -147,9 +144,7 @@ class EffectStep:
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
         """Advance step state for one frame; return ``True`` to advance to the next step, ``False`` to stay active."""
-        raise NotImplementedError(
-            "EffectStep subclasses must implement the update method"
-        )
+        raise NotImplementedError("EffectStep subclasses must implement the update method")
 
     def adjust_position(self, state: EffectState, position: float) -> float:
         """Transform sampling position before the effect shape is evaluated."""
@@ -187,9 +182,7 @@ class Effect:
 
     def __init__(self, name: str, shape_func: EffectShapeFunc | None = None):
         self.name = name
-        self._shape: EffectShapeFunc = (
-            shape_func if shape_func is not None else Shape.none()
-        )
+        self._shape: EffectShapeFunc = shape_func if shape_func is not None else Shape.none()
         self._steps: list[EffectStep] = []
 
     def add_steps(self, steps: Iterable[EffectStep]) -> Effect:
