@@ -58,3 +58,19 @@ def test_multiplier_clears_state_after_duration_completes_so_it_does_not_modify_
     effect.update(state, timer)
 
     assert state.get_step_data(step, object) is None
+
+
+def test_multiplier_passes_value_through_unchanged_after_duration_completes() -> None:
+    # After progress >= 1.0 the step clears its state so adjust_value returns
+    # the raw shape value (multiplier of 1.0).  The shape returns 0.7; with a
+    # multiplier of 0.0 while active the value would be 0.0, so 0.7 confirms
+    # the step is no longer modifying the output.
+    effect = Effect("test", lambda _: 0.7).add_steps([multiplier(0.0, 0.0)])
+    state = EffectState()
+    timer = EffectTimer(duration=1.0)
+    timer.update(1.0)
+
+    effect.update(state, timer)
+    value = effect.value(state, 0.0)
+
+    assert value == pytest.approx(0.7)

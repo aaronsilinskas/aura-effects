@@ -59,9 +59,9 @@ def test_lut_lookup_interpolates_linearly_between_stops() -> None:
     palette = PaletteLUT256(bytes([0, 0, 0, 0, 255, 255, 255, 255]))
 
     # index = int(value * 255); weight = index/255 → each channel = index
-    assert palette.lookup(0.25) == Palette.pack_rgb(63, 63, 63)   # index 63
+    assert palette.lookup(0.25) == Palette.pack_rgb(63, 63, 63)  # index 63
     assert palette.lookup(0.5) == Palette.pack_rgb(127, 127, 127)  # index 127
-    assert palette.lookup(0.75) == Palette.pack_rgb(191, 191, 191) # index 191
+    assert palette.lookup(0.75) == Palette.pack_rgb(191, 191, 191)  # index 191
 
 
 def test_lut_midpoint_stop_is_set_exactly() -> None:

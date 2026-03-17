@@ -55,3 +55,18 @@ def test_flame_sparks_respawn_to_keep_heat_active_over_multiple_cycles() -> None
 
     max_value = max(effect.value(state, i / 8) for i in range(8))
     assert max_value > 0.0
+
+
+def test_flame_with_spread_heats_neighboring_cells_around_spark() -> None:
+    # spread=1.0 gives half_flame_spread > 0, so the update loop heats cells
+    # on both sides of each spark (not just the spark cell itself).
+    # After one heavy heating frame multiple buffer positions should be non-zero.
+    effect = Effect("test", lambda _: 0.0).add_steps(
+        [flame(spark_count=1, heat_rate=100.0, resolution=8, spread=1.0)]
+    )
+    state = EffectState()
+
+    effect.update(state, make_timer(1.0))
+
+    hot_positions = sum(1 for i in range(8) if effect.value(state, i / 8) > 0.0)
+    assert hot_positions > 1
