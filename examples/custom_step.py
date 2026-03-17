@@ -3,9 +3,11 @@
 EffectStep has three hook methods you can override:
 
   update(state, timer) -> bool
-    Called once per frame. Write any per-frame data into ``state`` via
-    ``state.set_step_data(self, value)`` so each independent EffectState
-    (and therefore each independent animation) tracks its own values.
+    Called once per frame. Do per-frame computation here and store any
+    results in ``state`` via ``state.set_step_data(self, value)`` so that
+    ``adjust_value`` (called per pixel) can read them cheaply without
+    repeating the work. Each independent EffectState stores its own values,
+    so one step instance safely drives many animations simultaneously.
     Return True to hand control to the next step (most modifiers always
     return True); return False to hold control this frame.
 
@@ -56,26 +58,27 @@ class PulseStep(EffectStep):
     The sine oscillates between ``min_value`` and ``1.0``. ``frequency`` is in
     cycles per second.
 
-    Because ``adjust_value`` does not receive the timer, ``update`` stores
-    ``timer.total`` in the per-animation ``EffectState`` via ``set_step_data``
-    so each independent animation tracks its own time without any mutable
-    instance attributes.
+    The multiplier is computed once per frame in ``update`` and stored in
+    ``EffectState`` so ``adjust_value`` (called per pixel) only reads and
+    applies it — avoiding a ``math.sin`` call on every pixel.
     """
+
+    _TAU = 2.0 * math.pi
 
     def __init__(self, frequency: float, min_value: float = 0.1):
         self.frequency = frequency
         self.min_value = min_value
-        self._tau = 2.0 * math.pi
+        self._multiplier_range = 1.0 - min_value
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
-        state.set_step_data(self, timer.total)
+        # Sine in [-1, 1]; remap to [min_value, 1.0] and store for adjust_value.
+        sine = math.sin(self.frequency * timer.total * self._TAU)
+        multiplier = self.min_value + self._multiplier_range * (sine / 2.0 + 0.5)
+        state.set_step_data(self, multiplier)
         return True
 
     def adjust_value(self, state: EffectState, position: float, value: float) -> float:
-        total = state.get_step_data(self, float) or 0.0
-        # Sine in [-1, 1]; remap range to [min_value, 1.0].
-        raw = math.sin(self.frequency * total * self._tau)
-        multiplier = self.min_value + (1.0 - self.min_value) * (raw / 2.0 + 0.5)
+        multiplier = state.get_step_data(self, float) or self.min_value
         return value * multiplier
 
 
