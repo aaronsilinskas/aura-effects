@@ -100,7 +100,7 @@ class AccelerateStep(EffectStep):
         self,
         start: DynamicValue | None = None,
         end: DynamicValue = 1.0,
-        direction: DynamicValue | None = 1,
+        direction: DynamicValue | None = None,
     ):
         self.start = start
         self.end = end
