@@ -107,8 +107,8 @@ class AccelerateStep(EffectStep):
         self.direction = direction
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
-        range = state.get_step_data(self, Range)
-        if range is None:
+        speed_range = state.get_step_data(self, Range)
+        if speed_range is None:
             if self.start is not None:
                 start_speed = ValueGenerator.resolve(self.start)
             else:
@@ -124,9 +124,9 @@ class AccelerateStep(EffectStep):
                     start_speed *= -1
                     end_speed *= -1
 
-            range = Range(start_speed, end_speed)
-            state.set_step_data(self, range)
-        speed = range.lerp(timer.progress)
+            speed_range = Range(start_speed, end_speed)
+            state.set_step_data(self, speed_range)
+        speed = speed_range.lerp(timer.progress)
 
         velocity_data = VelocitySharedData.get(state)
         velocity_data.rotations_per_second = speed

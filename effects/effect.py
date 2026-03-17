@@ -42,8 +42,6 @@ def run_step_updates(
 class SharedStateKey:
     """Marker base class for shared state keys stored in ``EffectState``."""
 
-    pass
-
 
 class EffectState:
     """Holds all mutable animation state so one ``Effect`` instance can drive
@@ -219,4 +217,4 @@ class Effect:
         return max(0.0, min(1.0, shape_value))
 
     def __str__(self):
-        return f"Effect(name={self.name}) at {hex(id(self))} )"
+        return f"Effect(name={self.name}) at {hex(id(self))}"

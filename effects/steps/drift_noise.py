@@ -49,9 +49,7 @@ class DriftNoiseStep(EffectStep):
         if data is None:
             return value
 
-        sample_index = position * self.buffer_count + data.offset
-        while sample_index >= self.buffer_count:
-            sample_index -= self.buffer_count
+        sample_index = (position * self.buffer_count + data.offset) % self.buffer_count
 
         left_index = int(sample_index)
         right_index = (left_index + 1) % self.buffer_count
