@@ -3,6 +3,14 @@ import time
 
 
 class PerformanceTracker:
+    """Measures per-frame timing and memory allocation for on-device profiling.
+
+    Call ``start_frame`` at the beginning of each frame, bracket update and
+    render work with ``start_update_time``/``add_update_time`` and
+    ``start_render_time``/``add_render_time``, then call ``complete_frame`` at
+    the end. Aggregated stats are printed at ``log_interval`` second intervals.
+    """
+
     def __init__(self, log_interval: float = 5.0):
         now = time.monotonic()
         self.log_interval = log_interval
@@ -35,6 +43,7 @@ class PerformanceTracker:
         self.render_time_total += time.monotonic() - self._render_started_at
 
     def complete_frame(self, current_time: float) -> None:
+        """Record memory allocation for this frame and print stats if the log interval has elapsed."""
         memory_after = gc.mem_alloc()
         available_memory = gc.mem_free()
 

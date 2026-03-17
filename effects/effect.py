@@ -24,10 +24,8 @@ def run_step_updates(
 
     Each step's ``update`` method returns ``True`` when the step should advance
     to the next step. This helper keeps advancing until the active step returns
-    ``False`` or all steps were processed once.
-
-    Returns:
-        The index of the step that should remain active after this update call.
+    ``False`` or all steps were processed once. Returns the index of the step
+    that should remain active after this call.
     """
     step_count = len(steps)
     if step_count == 0:
@@ -48,13 +46,11 @@ class SharedStateKey:
 
 
 class EffectState:
-    """Holds all mutable animation state so a single ``Effect`` can drive multiple simultaneous animations without interference.
+    """Holds all mutable animation state so one ``Effect`` instance can drive multiple independent animations simultaneously.
 
-    Keeping state external to the effect allows the same ``Effect`` instance to run
-    independently across multiple simultaneous animations.
-
-    Shared data is accessible across steps; for example, velocity can be shared
-    between rotation and acceleration steps.
+    State ownership:
+    - Per-step data is keyed by step instance via ``get_step_data`` / ``set_step_data``.
+    - Shared data is keyed by ``SharedStateKey`` and accessible across steps (e.g. velocity shared between rotate and accelerate steps).
     """
 
     def __init__(self):

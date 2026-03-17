@@ -11,7 +11,7 @@ except ImportError:
 from effects.effect import EffectState, EffectTimer
 from effects.elements.registry import get_element_builder, list_element_names
 from effects.render import EffectRenderer, RendererConfig
-from performance import PerformanceTracker
+from effects.performance import PerformanceTracker
 
 import board
 

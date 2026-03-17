@@ -30,6 +30,8 @@ class VelocitySharedData:
     instance.
     """
 
+    __slots__ = ("rotations_per_second", "offset")
+
     _VELOCITY_SHARED_KEY = SharedStateKey()
 
     def __init__(self) -> None:
@@ -46,8 +48,6 @@ class VelocitySharedData:
             state.set_shared_data(VelocitySharedData._VELOCITY_SHARED_KEY, data)
 
         return data
-
-    __slots__ = ("rotations_per_second", "offset")
 
 
 class RotateStep(EffectStep):
