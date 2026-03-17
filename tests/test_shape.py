@@ -27,10 +27,10 @@ def test_gradient_is_zero_at_start_of_strip() -> None:
     assert shape(0.0) == pytest.approx(0.0)
 
 
-def test_gradient_is_one_at_end_of_strip() -> None:
+def test_gradient_approaches_one_near_end_of_strip() -> None:
+    # Position 1.0 wraps to 0.0 via modulo, so use a value just below 1.0.
     shape = Shape.gradient()
 
-    # Position 1.0 wraps to 0.0 via modulo, so use a value just below 1.0.
     assert shape(0.9999) == pytest.approx(pow(0.9999, GAMMA_FACTOR), rel=1e-4)
 
 
@@ -69,11 +69,17 @@ def test_centered_gradient_peaks_at_center_of_strip() -> None:
     assert shape(0.5) == pytest.approx(1.0)
 
 
-def test_centered_gradient_is_zero_at_both_edges() -> None:
+def test_centered_gradient_is_zero_at_left_edge() -> None:
     shape = Shape.centered_gradient()
 
     assert shape(0.0) == pytest.approx(0.0)
-    # Position 1.0 wraps to 0.0, check just inside the upper edge instead.
+
+
+def test_centered_gradient_is_symmetric_near_right_edge() -> None:
+    # Position 1.0 wraps to 0.0 via modulo; just inside the upper edge should
+    # mirror the corresponding point near the lower edge.
+    shape = Shape.centered_gradient()
+
     assert shape(0.9999) == pytest.approx(shape(0.0001), rel=1e-3)
 
 

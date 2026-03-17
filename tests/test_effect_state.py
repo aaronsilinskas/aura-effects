@@ -65,7 +65,7 @@ def test_remove_shared_data_on_unset_key_does_not_raise() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_shared_data_and_step_data_do_not_interfere_with_each_other() -> None:
+def test_shared_data_is_unaffected_by_step_data_writes() -> None:
     key = SharedStateKey()
     step = EffectStep.__new__(EffectStep)
     state = EffectState()
@@ -74,6 +74,16 @@ def test_shared_data_and_step_data_do_not_interfere_with_each_other() -> None:
     state.set_step_data(step, "per-step")
 
     assert state.get_shared_data(key, str) == "shared"
+
+
+def test_step_data_is_unaffected_by_shared_data_writes() -> None:
+    key = SharedStateKey()
+    step = EffectStep.__new__(EffectStep)
+    state = EffectState()
+
+    state.set_shared_data(key, "shared")
+    state.set_step_data(step, "per-step")
+
     assert state.get_step_data(step, str) == "per-step"
 
 

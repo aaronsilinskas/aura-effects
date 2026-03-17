@@ -22,6 +22,9 @@ class OffsetPosition(EffectStep):
         self._offset = offset
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
+        # Returns True so the effect immediately advances past this step each
+        # frame.  The transform still applies because Effect.value() calls
+        # adjust_position on ALL steps regardless of which step is active.
         return True
 
     def adjust_position(self, state: EffectState, position: float) -> float:
@@ -35,6 +38,9 @@ class MultiplyValue(EffectStep):
         self._factor = factor
 
     def update(self, state: EffectState, timer: EffectTimer) -> bool:
+        # Returns True so the effect immediately advances past this step each
+        # frame.  The transform still applies because Effect.value() calls
+        # adjust_value on ALL steps regardless of which step is active.
         return True
 
     def adjust_value(self, state: EffectState, position: float, value: float) -> float:
