@@ -1,4 +1,3 @@
-import math
 import pytest
 
 from effects.shape import Shape

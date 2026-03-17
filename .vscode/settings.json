@@ -1,0 +1,15 @@
+{
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
+    "chat.tools.terminal.autoApprove": {
+        "/^python -m pytest tests\\/[\\w/.]+ -v 2>&1$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python -m pytest -v 2>&1$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    },
+}

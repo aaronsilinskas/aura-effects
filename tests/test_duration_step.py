@@ -1,4 +1,6 @@
-from effects.effect import Effect, EffectState, EffectStep, EffectTimer
+import pytest
+
+from effects.effect import Effect, EffectState, EffectTimer
 from effects.steps.duration import duration
 from conftest import (
     CountUpdates,
@@ -24,7 +26,7 @@ def test_duration_step_applies_child_position_transform_while_active() -> None:
     effect.update(state, make_timer(0.1))
     value = effect.value(state, 0.5)
 
-    assert abs(value - 0.75) < 1e-6
+    assert value == pytest.approx(0.75)
 
 
 def test_duration_step_applies_child_value_transform_while_active() -> None:
@@ -48,7 +50,7 @@ def test_duration_step_does_not_apply_child_transforms_before_first_update() -> 
 
     value = effect.value(state, 0.0)
 
-    assert abs(value - 0.8) < 1e-6
+    assert value == pytest.approx(0.8)
 
 
 # ---------------------------------------------------------------------------
@@ -58,19 +60,10 @@ def test_duration_step_does_not_apply_child_transforms_before_first_update() -> 
 
 def test_duration_step_advances_to_next_parent_step_when_time_expires() -> None:
     log: list = []
-
-    class _RecordAndHold(EffectStep):
-        def __init__(self, label: str):
-            self._label = label
-
-        def update(self, state: EffectState, timer: EffectTimer) -> bool:
-            log.append(self._label)
-            return False
-
     effect = Effect("test").add_steps(
         [
             duration(0.5),
-            _RecordAndHold("next"),
+            RecordAndHold("next", log),
         ]
     )
     state = EffectState()
@@ -82,16 +75,10 @@ def test_duration_step_advances_to_next_parent_step_when_time_expires() -> None:
 
 def test_duration_step_does_not_advance_before_duration_expires() -> None:
     log: list = []
-
-    class _RecordAndHold(EffectStep):
-        def update(self, state: EffectState, timer: EffectTimer) -> bool:
-            log.append("next")
-            return False
-
     effect = Effect("test").add_steps(
         [
             duration(1.0),
-            _RecordAndHold(),
+            RecordAndHold("next", log),
         ]
     )
     state = EffectState()
@@ -117,7 +104,7 @@ def test_duration_step_clears_child_transforms_after_expiry_by_default() -> None
     value = effect.value(state, 0.0)
 
     # Multiplier step state cleared: shape value passes through unmodified.
-    assert abs(value - 0.8) < 1e-6
+    assert value == pytest.approx(0.8)
 
 
 # ---------------------------------------------------------------------------
@@ -140,7 +127,7 @@ def test_duration_step_preserves_child_transforms_across_cycles_when_persist_is_
     value = effect.value(state, 0.0)
 
     # Child step still applies its transform (0.8 × 0.5 = 0.4).
-    assert abs(value - 0.4) < 1e-6
+    assert value == pytest.approx(0.4)
 
 
 # ---------------------------------------------------------------------------
